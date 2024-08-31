@@ -29,7 +29,7 @@ PID=$(pgrep -t tty2 gnome-session)
 export DBUS_SESSION_BUS_ADDRESS=$(grep -z DBUS_SESSION_BUS_ADDRESS /proc/$PID/environ|cut -d= -f2-)
 
 # Get a random wallpaper file from the directory
-selectedWallpaper=$(find "$wallpapersDir" -type f | shuf -n 1)
+selectedWallpaper=$(find "$wallpapersDir" -type f -not -path "*/.git/*" | shuf -n 1)
 
 # Check if a wallpaper was selected
 if [ -z "$selectedWallpaper" ]; then
@@ -38,7 +38,7 @@ if [ -z "$selectedWallpaper" ]; then
 fi
 
 # Update the wallpaper with the gsettings command. Note, this only works in GNOME shell
-gsettings set org.gnome.desktop.background picture-options "spanned"
+# gsettings set org.gnome.desktop.background picture-options "spanned"
 gsettings set org.gnome.desktop.background picture-uri-dark "file:///$selectedWallpaper"
 
 # Log the action
